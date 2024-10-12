@@ -1,0 +1,12 @@
+build
+.gradle
+.gradletasknamecache
+.idea/*
+!.idea/runConfigurations
+!.idea/runConfigurations/*
+!.idea/vcs.xml
+!.idea/dictionaries
+!.idea/dictionaries/*
+!.idea/copyright
+!.idea/copyright/*
+!.idea/icon.svg
