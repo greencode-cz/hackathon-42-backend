@@ -17,7 +17,7 @@ fun Application.configureRouting() {
         }
         get("/vehicle/unlock") {
             Vehicle.unlock()
-            call.respond(HttpStatusCode.OK, "Vehicle is locked: ${Vehicle.unlock()}")
+            call.respond(HttpStatusCode.OK, "Vehicle is locked: ${Vehicle.lockStatus()}")
         }
         get("/vehicle/ventilation/start") {
             Vehicle.startVentilation()
