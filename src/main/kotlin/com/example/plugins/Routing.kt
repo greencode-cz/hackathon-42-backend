@@ -1,10 +1,7 @@
 package com.example.plugins
 
 import com.example.app.Vehicle
-import com.example.app.model.ChargingProfiles
-import com.example.app.model.VehicleCharging
-import com.example.app.model.VehicleEquipment
-import com.example.app.model.VehicleStatus
+import com.example.app.model.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -19,22 +16,22 @@ fun Application.configureRouting() {
         }
         get("/vehicle/lock") {
             Vehicle.lock()
-            call.respond(HttpStatusCode.OK, "Vehicle is locked: ${Vehicle.lockStatus()}")
+            call.respond(HttpStatusCode.OK, Vehicle.lockStatus())
         }
         get("/vehicle/unlock") {
             Vehicle.unlock()
-            call.respond(HttpStatusCode.OK, "Vehicle is locked: ${Vehicle.lockStatus()}")
+            call.respond(HttpStatusCode.OK, Vehicle.lockStatus())
         }
         get("/vehicle/ventilation/start") {
             Vehicle.startVentilation()
-            call.respond(HttpStatusCode.OK, "Vehicle ventilation is active: ${Vehicle.ventilationStatus()}")
+            call.respond(HttpStatusCode.OK, Vehicle.ventilationStatus())
         }
         get("/vehicle/ventilation/stop") {
             Vehicle.stopVentilation()
-            call.respond(HttpStatusCode.OK, "Vehicle ventilation is active: ${Vehicle.ventilationStatus()}")
+            call.respond(HttpStatusCode.OK, Vehicle.ventilationStatus())
         }
         get("/vehicle/ventilation/status") {
-            call.respond(HttpStatusCode.OK, "Vehicle ventilation is active: ${Vehicle.ventilationStatus()}")
+            call.respond(HttpStatusCode.OK, Vehicle.ventilationStatus())
         }
         get("/vehicle/") {
             val vehicleStatus = VehicleStatus()
@@ -71,6 +68,30 @@ fun Application.configureRouting() {
                 json.encodeToString(serializer = VehicleEquipment.serializer(), value = vehicleEquipment)
             call.respondText(
                 text = vehicleEquipmentJson,
+                contentType = ContentType.Application.Json
+            )
+        }
+
+        get("/vehicle/air-conditioning") {
+            val jsonString =
+                """{"estimatedDateTimeToReachTargetTemperature":"2024-10-14T05:20:35.714414801Z","state":"OFF","runningRequests":[],"targetTemperature":{"temperatureValue":22.0,"unitInCar":"CELSIUS"},"airConditioningAtUnlock":true,"windowHeatingEnabled":false,"steeringWheelPosition":"LEFT","seatHeatingActivated":{"frontLeft":true,"frontRight":false},"chargerConnectionState":"DISCONNECTED","chargerLockState":"UNLOCKED","windowHeatingState":{"front":"OFF","rear":"OFF","unspecified":"INVALID"},"timers":[{"id":1,"enabled":false,"time":"00:00","type":"ONE_OFF","selectedDays":["SATURDAY"]},{"id":2,"enabled":false,"time":"00:00","type":"ONE_OFF","selectedDays":["SATURDAY"]}],"carCapturedTimestamp":"2024-10-14T05:18:40Z","errors":[]}"""
+            val vehicleEquipment = Json.decodeFromString(VehicleAirConditioning.serializer(), jsonString)
+            val vehicleEquipmentJson =
+                json.encodeToString(serializer = VehicleAirConditioning.serializer(), value = vehicleEquipment)
+            call.respondText(
+                text = vehicleEquipmentJson,
+                contentType = ContentType.Application.Json
+            )
+        }
+
+        get("/chargingSessions") {
+            val jsonString =
+                """{"sessions":[{"startAt":"2024-10-08T08:16:31Z","chargedInKw":5.24,"durationInSec":2057},{"startAt":"2024-11-08T08:16:31Z","chargedInKw":9.24,"durationInSec":3057},{"startAt":"2024-12-08T08:16:31Z","chargedInKw":12.24,"durationInSec":1057}]}"""
+            val chargingSessions = Json.decodeFromString(ChargingSessions.serializer(), jsonString)
+            val chargingSessionsJson =
+                json.encodeToString(serializer = ChargingSessions.serializer(), value = chargingSessions)
+            call.respondText(
+                text = chargingSessionsJson,
                 contentType = ContentType.Application.Json
             )
         }
