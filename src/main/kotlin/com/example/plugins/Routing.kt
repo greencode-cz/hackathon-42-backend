@@ -43,7 +43,7 @@ fun Application.configureRouting() {
             val ventilationStatusJson =
                 json.encodeToString(
                     serializer = VentilationStatus.serializer(),
-                    value = VentilationStatus(isRunning = Vehicle.ventilationStatus())
+                    value = VentilationStatus(isRunning = Vehicle.ventilationStatus(), temp = Vehicle.getTemp())
                 )
             call.respondText(
                 ventilationStatusJson,
@@ -55,13 +55,16 @@ fun Application.configureRouting() {
             val ventilationStatusJson =
                 json.encodeToString(
                     serializer = VentilationStatus.serializer(),
-                    value = VentilationStatus(isRunning = Vehicle.ventilationStatus())
+                    value = VentilationStatus(
+                        isRunning = Vehicle.ventilationStatus(), temp = Vehicle.getTemp()
+                    )
                 )
             call.respondText(
                 ventilationStatusJson,
                 contentType = ContentType.Application.Json
             )
         }
+
         get("/vehicle/ventilation/status") {
             val ventilationStatusJson =
                 json.encodeToString(
@@ -132,6 +135,38 @@ fun Application.configureRouting() {
                 json.encodeToString(serializer = ChargingSessions.serializer(), value = chargingSessions)
             call.respondText(
                 text = chargingSessionsJson,
+                contentType = ContentType.Application.Json
+            )
+        }
+
+        get("/vehicle/air-conditioning/increaseTemperature") {
+            Vehicle.increaseTemperature()
+            val ventilationStatusJson =
+                json.encodeToString(
+                    serializer = VentilationStatus.serializer(),
+                    value = VentilationStatus(
+                        isRunning = Vehicle.ventilationStatus(),
+                        temp = Vehicle.getTemp()
+                    )
+                )
+            call.respondText(
+                ventilationStatusJson,
+                contentType = ContentType.Application.Json
+            )
+        }
+
+        get("/vehicle/air-conditioning/decreaseTemperature") {
+            Vehicle.decreaseTemperature()
+            val ventilationStatusJson =
+                json.encodeToString(
+                    serializer = VentilationStatus.serializer(),
+                    value = VentilationStatus(
+                        isRunning = Vehicle.ventilationStatus(),
+                        temp = Vehicle.getTemp()
+                    )
+                )
+            call.respondText(
+                ventilationStatusJson,
                 contentType = ContentType.Application.Json
             )
         }
