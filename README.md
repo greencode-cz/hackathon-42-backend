@@ -56,6 +56,14 @@ Returns the vehicle's air conditioning details in JSON format.
 
 Returns the vehicle's charging sessions in JSON format.
 
+### GET `/vehicle/air-conditioning/increaseTemperature`
+
+Increases the vehicle's temperature and returns the updated ventilation status.
+
+### GET `/vehicle/air-conditioning/decreaseTemperature`
+
+Decreases the vehicle's temperature and returns the updated ventilation status.
+
 ## Response Format
 
 All endpoints return data in JSON format.
