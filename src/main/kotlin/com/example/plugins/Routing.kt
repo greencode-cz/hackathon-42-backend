@@ -16,11 +16,27 @@ fun Application.configureRouting() {
         }
         get("/vehicle/lock") {
             Vehicle.lock()
-            call.respond(HttpStatusCode.OK, Vehicle.lockStatus())
+            val vehicleLockStatusJson =
+                json.encodeToString(
+                    serializer = VehicleLockStatus.serializer(),
+                    value = VehicleLockStatus(isOpen = Vehicle.lockStatus())
+                )
+            call.respondText(
+                vehicleLockStatusJson,
+                contentType = ContentType.Application.Json
+            )
         }
         get("/vehicle/unlock") {
             Vehicle.unlock()
-            call.respond(HttpStatusCode.OK, Vehicle.lockStatus())
+            val vehicleLockStatusJson =
+                json.encodeToString(
+                    serializer = VehicleLockStatus.serializer(),
+                    value = VehicleLockStatus(isOpen = Vehicle.lockStatus())
+                )
+            call.respondText(
+                vehicleLockStatusJson,
+                contentType = ContentType.Application.Json
+            )
         }
         get("/vehicle/ventilation/start") {
             Vehicle.startVentilation()
