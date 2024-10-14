@@ -40,14 +40,38 @@ fun Application.configureRouting() {
         }
         get("/vehicle/ventilation/start") {
             Vehicle.startVentilation()
-            call.respond(HttpStatusCode.OK, Vehicle.ventilationStatus())
+            val ventilationStatusJson =
+                json.encodeToString(
+                    serializer = VentilationStatus.serializer(),
+                    value = VentilationStatus(isRunning = Vehicle.ventilationStatus())
+                )
+            call.respondText(
+                ventilationStatusJson,
+                contentType = ContentType.Application.Json
+            )
         }
         get("/vehicle/ventilation/stop") {
             Vehicle.stopVentilation()
-            call.respond(HttpStatusCode.OK, Vehicle.ventilationStatus())
+            val ventilationStatusJson =
+                json.encodeToString(
+                    serializer = VentilationStatus.serializer(),
+                    value = VentilationStatus(isRunning = Vehicle.ventilationStatus())
+                )
+            call.respondText(
+                ventilationStatusJson,
+                contentType = ContentType.Application.Json
+            )
         }
         get("/vehicle/ventilation/status") {
-            call.respond(HttpStatusCode.OK, Vehicle.ventilationStatus())
+            val ventilationStatusJson =
+                json.encodeToString(
+                    serializer = VentilationStatus.serializer(),
+                    value = VentilationStatus(isRunning = Vehicle.ventilationStatus())
+                )
+            call.respondText(
+                ventilationStatusJson,
+                contentType = ContentType.Application.Json
+            )
         }
         get("/vehicle/") {
             val vehicleStatus = VehicleStatus()
