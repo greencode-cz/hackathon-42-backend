@@ -64,6 +64,10 @@ Increases the vehicle's temperature and returns the updated ventilation status.
 
 Decreases the vehicle's temperature and returns the updated ventilation status.
 
+### GET `/vehicle/location`
+
+Returns the vehicle's location in JSON format.
+
 ## Response Format
 
 All endpoints return data in JSON format.
