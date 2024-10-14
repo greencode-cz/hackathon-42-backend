@@ -170,5 +170,16 @@ fun Application.configureRouting() {
                 contentType = ContentType.Application.Json
             )
         }
+        get("/vehicle/location") {
+            val jsonString =
+                """{"latitude":50.0755,"longitude":14.4378,"carCapturedTimestamp":"2024-10-14T05:20:35.714414801Z"}"""
+            val vehicleLocation = Json.decodeFromString(VehicleLocation.serializer(), jsonString)
+            val vehicleLocationJson =
+                json.encodeToString(serializer = VehicleLocation.serializer(), value = vehicleLocation)
+            call.respondText(
+                text = vehicleLocationJson,
+                contentType = ContentType.Application.Json
+            )
+        }
     }
 }
